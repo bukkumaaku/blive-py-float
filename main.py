@@ -17,7 +17,7 @@ import src.varlist as bv
 from src.bdmapi import getDanmu
 
 # 直播间ID的取值看直播间URL
-bv.room_id = 13233348
+bv.room_id = 7777
 
 
 class Worker(QThread):
@@ -68,17 +68,17 @@ class MainWindow(QMainWindow):
 
     def sendMessage(self):
         postData = {
-            'color': '16777215',
-            'fontsize': '25',
-            'mode': '1',
-            'msg': self.input.text(),
-            'rnd': str(int(time.time())),
-            'roomid': bv.room_id,
-            'csrf_token': bv.csrf,
-            'csrf': bv.csrf,
-            'bubble': '0'
+            "color": "16777215",
+            "fontsize": "25",
+            "mode": "1",
+            "msg": self.input.text(),
+            "rnd": str(int(time.time())),
+            "roomid": bv.room_id,
+            "csrf_token": bv.csrf,
+            "csrf": bv.csrf,
+            "bubble": "0",
         }
-        sendUrl = 'https://api.live.bilibili.com/msg/send'
+        sendUrl = "https://api.live.bilibili.com/msg/send"
         session = requests.session()
         session.cookies = cookielib.LWPCookieJar(filename=bv.cookiePath)
         session.cookies.load(ignore_discard=True)
@@ -99,21 +99,27 @@ class MainWindow(QMainWindow):
     def addInput(self):
         self.input = QLineEdit(self)
         self.input.setGeometry(5, 455, 240, 20)
-        self.input.setStyleSheet("""
+        self.input.setStyleSheet(
+            """
                             background-color: rgba(255,255,255,0.5);
                             color:#000000;
-                        """)
+                        """
+        )
         self.input.returnPressed.connect(self.sendMessage)
 
     def addMessageView(self):
         self.messageView = QTextEdit(self)
-        self.messageView.setGeometry(5, 18, 240, 435)  # Adjust the position and size as needed
+        self.messageView.setGeometry(
+            5, 18, 240, 435
+        )  # Adjust the position and size as needed
         self.messageView.setReadOnly(True)  # Make it read-only
         self.messageView.setHtml("")
 
     def addShowView(self):
         self.showView = QTextEdit(self)
-        self.showView.setGeometry(5, 475, 240, 25)  # Adjust the position and size as needed
+        self.showView.setGeometry(
+            5, 475, 240, 25
+        )  # Adjust the position and size as needed
         self.showView.setReadOnly(True)  # Make it read-only
         self.showView.setHtml("<span style='color:#54AEFF'>高能用户数:获取中 在线数:获取中</span>")
         self.showView.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
@@ -149,7 +155,12 @@ class MainWindow(QMainWindow):
         # Update the widget with the number
         self.sm(data)
         self.showView.setHtml(
-            "<span style='color:#54AEFF'>高能用户数:" + bv.highRankCount + " 在线数:" + bv.onlineCount + "</span>")
+            "<span style='color:#54AEFF'>高能用户数:"
+            + bv.highRankCount
+            + " 在线数:"
+            + bv.onlineCount
+            + "</span>"
+        )
 
 
 def init_session():
@@ -166,7 +177,7 @@ def run_in_new_thread(loop1, coro):
     loop.run_until_complete(coro)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     if len(sys.argv) > 1:
         bv.room_id = sys.argv[1]
     # 初始化登陆
