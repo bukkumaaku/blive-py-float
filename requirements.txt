@@ -1,0 +1,15 @@
+yarl
+PyQt6
+requests
+qrcode
+django-qrcode
+Pillow
+blivedm
+websocket
+websocket-client
+opencv-python
+numpy
+psutil
+aiohttp
+Brotli
+pure-protobuf==3.0.0a5
