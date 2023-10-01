@@ -4,8 +4,9 @@ import http.cookies
 import aiohttp
 import requests
 
-import bdm.blivedm as blivedm
-import bdm.blivedm.models.web as web_models
+import bdm1.blivedm as blivedm
+import blivedm
+import bdm1.blivedm.models.web as web_models
 import src.varlist as bv
 
 
