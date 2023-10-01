@@ -103,3 +103,4 @@ ENV/
 
 cookies.txt
 tmp/
+.DS_Store
