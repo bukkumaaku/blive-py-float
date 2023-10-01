@@ -88,7 +88,9 @@ class MainWindow(QMainWindow):
 
     def addLabel(self):
         self.label = QLabel("", self)
-        self.label.setStyleSheet(" background-color: rgba(255,255,255,0.4);")
+        self.label.setStyleSheet(
+            "background-color:rgba(255,255,255,0.4); border-radius:10px;"
+        )
         self.label.move(35, 5)
         self.label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.label.mouseReleaseEvent = self.stopMove
