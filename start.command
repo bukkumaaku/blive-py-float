@@ -1,5 +1,5 @@
 cd "$(dirname "$0")"
-$live=13233348
+$live=7777
 if [ -d "./venv/" ]; then
     echo "虚拟环境存在"
     source venv/bin/activate
