@@ -18,7 +18,7 @@ async def getDanmu():
 
 
 def init_session():
-    cookie_jar = http.cookiejar.LWPCookieJar("cookies.txt")
+    cookie_jar = http.cookiejar.LWPCookieJar(bv.cookiePath)
     cookie_jar.load()
     cookies = requests.utils.dict_from_cookiejar(cookie_jar)
     bv.csrf = cookies["bili_jct"]
