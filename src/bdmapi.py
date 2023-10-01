@@ -27,9 +27,6 @@ def init_session():
 
 
 async def run_single_client():
-    """
-    演示监听一个直播间
-    """
     client = blivedm.BLiveClient(bv.room_id, session=bv.session)
     handler = MyHandler()
     client.set_handler(handler)
