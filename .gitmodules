@@ -1,0 +1,3 @@
+[submodule "bdm"]
+	path = bdm
+	url = https://github.com/xfgryujk/blivedm.git
