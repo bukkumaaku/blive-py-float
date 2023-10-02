@@ -30,7 +30,7 @@ class Worker(QThread):
 
     def run(self):
         while True:
-            time.sleep(0.1)
+            time.sleep(0.05)
             # 获取锁
             bv.mutex.lock()
             try:
@@ -109,23 +109,19 @@ class MainWindow(QMainWindow):
         with open("src/main.html", "r") as f:
             content = f.read()
         self.messageView.setHtml(content)
-        self.messageView.setStyleSheet("background-color: rgba(255,255,255,0);")
 
     def addShowView(self):
         self.showView = QTextEdit(self)
-        self.showView.setGeometry(
-            5, 475, 240, 25
-        )  # Adjust the position and size as needed
-        self.showView.setReadOnly(True)  # Make it read-only
+        self.showView.setGeometry(5, 475, 240, 25)
+        self.showView.setReadOnly(True)
         self.showView.setHtml("<span style='color:#54AEFF'>高能用户数:获取中 在线数:获取中</span>")
         self.showView.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
         self.showView.setStyleSheet("background-color: rgba(255,255,255,0);")
 
     def sm(self, m):
         self.messageView.page().runJavaScript(
-            f"addMessage('<span style=\"font-size:0.8rem;line-height:1rem;margin:3px 0px 2px 0px;\">{urllib.parse.quote(m)}</span>')")
-        # self.messageView.append(f"<div style='margin-bottom:3px;margin-top:3px;'>{str(m)}</div>")
-        # self.messageView.ensureCursorVisible()
+            f"addMessage('<span style=\"font-size:0.8rem;line-height:1rem;margin:3px 0px 2px 0px;\">"
+            f"{urllib.parse.quote(m)}</span>')")
 
     def addFrame(self):
         self.baseFrame = QFrame(self)
@@ -191,7 +187,7 @@ if __name__ == "__main__":
     # 创建一个新的线程来运行事件循环
     t = threading.Thread(target=run_in_new_thread, args=(loop, getDanmu()))
     t.start()
-
+    # 创建应用窗口
     app = QApplication(sys.argv)
     app.setWindowIcon(QIcon(QPixmap("src/s.ico")))
     window = MainWindow()

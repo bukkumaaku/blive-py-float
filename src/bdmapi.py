@@ -79,9 +79,7 @@ class MyHandler(blivedm.BaseHandler):
     """def _on_heartbeat(self, client: blivedm.BLiveClient, message: web_models.HeartbeatMessage):
         print(f'[{client.room_id}] 心跳')"""
 
-    def _on_danmaku(
-        self, client: blivedm.BLiveClient, message: web_models.DanmakuMessage
-    ):
+    def _on_danmaku(self, client: blivedm.BLiveClient, message: web_models.DanmakuMessage):
         prefixData = ""
         if message.medal_name:
             mcolor = str(hex(message.mcolor)).replace("0x", "")
@@ -99,11 +97,14 @@ class MyHandler(blivedm.BaseHandler):
                 {str(message.medal_level)}
                 </span></span>&nbsp;"""
             )
+            if message.user_level != 0:
+                prefixData += f"""<span style='color: #fff;background-color: transparent;border-radius: 2px;
+                display: inline-block;padding:0px 4px 0px 4px;border:1px solid #{ulevel_color};color:#{ulevel_color};'>
+                UL&nbsp;{str(message.user_level)}</span>&nbsp;"""
         data = f"{prefixData}<span style='color:#ffffff;'>{message.uname}：{message.msg}</span>"
         self.setMessage(data)
 
     def _on_gift(self, client: blivedm.BLiveClient, message: web_models.GiftMessage):
-        global window
         if message.coin_type == "gold":
             metal = "金"
         else:
@@ -116,13 +117,13 @@ class MyHandler(blivedm.BaseHandler):
         self.setMessage(data)
 
     def _on_buy_guard(
-        self, client: blivedm.BLiveClient, message: web_models.GuardBuyMessage
+            self, client: blivedm.BLiveClient, message: web_models.GuardBuyMessage
     ):
         data = f"[{client.room_id}] {message.username} 购买{message.gift_name}"
         self.setMessage(data)
 
     def _on_super_chat(
-        self, client: blivedm.BLiveClient, message: web_models.SuperChatMessage
+            self, client: blivedm.BLiveClient, message: web_models.SuperChatMessage
     ):
         data = f"[{client.room_id}] 醒目留言 ¥{message.price} {message.uname}：{message.message}"
         self.setMessage(data)
