@@ -1,5 +1,6 @@
 yarl
 PyQt6
+PyQt6-WebEngine
 requests
 qrcode
 django-qrcode

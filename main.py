@@ -6,13 +6,13 @@ import sys
 import threading
 import time
 import urllib.parse
+
 import aiohttp
 import requests
 from PyQt6.QtCore import Qt, QThread, pyqtSignal, pyqtSlot
 from PyQt6.QtGui import QCursor, QIcon, QPixmap
-from PyQt6.QtWidgets import QApplication, QMainWindow, QLineEdit, QTextEdit, QFrame,QTextBrowser
 from PyQt6.QtWebEngineWidgets import QWebEngineView
-from PyQt6.QtWebChannel import QWebChannel
+from PyQt6.QtWidgets import QApplication, QMainWindow, QLineEdit, QTextEdit, QFrame
 
 import src.login as slogin
 import src.varlist as bv
@@ -122,9 +122,10 @@ class MainWindow(QMainWindow):
         self.showView.setStyleSheet("background-color: rgba(255,255,255,0);")
 
     def sm(self, m):
-        self.messageView.page().runJavaScript(f"addMessage('<span style=\"font-size:0.8rem;line-height:0.8rem;margin:2px 0px 2px 0px;\">{urllib.parse.quote(m)}</span>')")
-        #self.messageView.append(f"<div style='margin-bottom:3px;margin-top:3px;'>{str(m)}</div>")
-        #self.messageView.ensureCursorVisible()
+        self.messageView.page().runJavaScript(
+            f"addMessage('<span style=\"font-size:0.8rem;line-height:0.8rem;margin:2px 0px 2px 0px;\">{urllib.parse.quote(m)}</span>')")
+        # self.messageView.append(f"<div style='margin-bottom:3px;margin-top:3px;'>{str(m)}</div>")
+        # self.messageView.ensureCursorVisible()
 
     def addFrame(self):
         self.baseFrame = QFrame(self)
