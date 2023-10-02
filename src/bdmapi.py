@@ -94,12 +94,12 @@ class MyHandler(blivedm.BaseHandler):
                 f"""<span style='color: #ffffff;border: 1px solid #{mcolor};border-radius: 2px;
                 display: inline-block;padding-left: 1px;background-color:#{mcolor};'>
                 {str(message.medal_name)}
-                <span style='color: #000000;background-color: #ffffff;border-radius: 2px;
+                <span style='color: #000000;background-color: #ffffff;border-radius: 0px 2px 2px 0px;
                 display: inline-block;padding-left: 2px;padding-right: 2px;'>
                 {str(message.medal_level)}
-                </span></span>"""
+                </span></span>&nbsp;"""
             )
-        data = f"{prefixData}&nbsp;<span style='color:#ffffff;'>{message.uname}：{message.msg}</span>"
+        data = f"{prefixData}<span style='color:#ffffff;'>{message.uname}：{message.msg}</span>"
         self.setMessage(data)
 
     def _on_gift(self, client: blivedm.BLiveClient, message: web_models.GiftMessage):

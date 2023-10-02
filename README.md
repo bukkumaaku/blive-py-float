@@ -13,6 +13,12 @@
 -   查看在线查看的人数（似乎不太准确）
 
 #### 详细用法
-
 -   请在 command 文件内修改 room_id 后的数字即可更改监听房间
+-   双击start.command即可开始，会自动创建虚拟环境和安装依赖
 -   窗口顶部小白条按住可以移动窗口、双击关闭窗口
+-   输入框回车即可发送信息
+
+# 致谢
+[blivedm](https://github.com/xfgryujk/blivedm)
+
+[bilibili-API-collect](https://github.com/SocialSisterYi/bilibili-API-collect)

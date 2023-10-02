@@ -7,7 +7,8 @@
 		<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 		<script>
 			function addMessage(str) {
-				$("#view").append(decodeURIComponent(str));
+				let t = $(decodeURIComponent(str));
+				$("#view").append(t);
 				var $div = $("#view"); //获取div元素
 				var divHeight = $div.height(); //获取div元素高度
 				var scrollHeight = $div.prop('scrollHeight'); //获取div元素的滚动高度
@@ -19,6 +20,7 @@
 				font-family:Helvetica;
 				padding: 0;
 				margin: 0;
+				transition:all 0.2s;
 			}
 			body {
 				background-color: #222222;

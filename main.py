@@ -19,7 +19,7 @@ import src.varlist as bv
 from src.bdmapi import getDanmu
 
 # 直播间ID的取值看直播间URL
-bv.room_id = 1017
+bv.room_id = 7777
 
 
 class Worker(QThread):
@@ -123,7 +123,7 @@ class MainWindow(QMainWindow):
 
     def sm(self, m):
         self.messageView.page().runJavaScript(
-            f"addMessage('<span style=\"font-size:0.8rem;line-height:0.8rem;margin:2px 0px 2px 0px;\">{urllib.parse.quote(m)}</span>')")
+            f"addMessage('<span style=\"font-size:0.8rem;line-height:1rem;margin:3px 0px 2px 0px;\">{urllib.parse.quote(m)}</span>')")
         # self.messageView.append(f"<div style='margin-bottom:3px;margin-top:3px;'>{str(m)}</div>")
         # self.messageView.ensureCursorVisible()
 
