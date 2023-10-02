@@ -5,12 +5,14 @@ import os
 import sys
 import threading
 import time
-
+import urllib.parse
 import aiohttp
 import requests
 from PyQt6.QtCore import Qt, QThread, pyqtSignal, pyqtSlot
 from PyQt6.QtGui import QCursor, QIcon, QPixmap
 from PyQt6.QtWidgets import QApplication, QMainWindow, QLineEdit, QTextEdit, QFrame,QTextBrowser
+from PyQt6.QtWebEngineWidgets import QWebEngineView
+from PyQt6.QtWebChannel import QWebChannel
 
 import src.login as slogin
 import src.varlist as bv
@@ -88,7 +90,7 @@ class MainWindow(QMainWindow):
 
     def addLabel(self):
         self.label = QFrame(self)
-        self.label.setGeometry(50, 5, 150, 5)
+        self.label.setGeometry(50, 7, 150, 5)
         self.label.setStyleSheet("background-color:rgba(255,255,255,0.4);")
         self.label.mouseReleaseEvent = self.stopMove
         self.label.mouseDoubleClickEvent = self.closeWindow
@@ -97,16 +99,16 @@ class MainWindow(QMainWindow):
     def addInput(self):
         self.input = QLineEdit(self)
         self.input.setGeometry(5, 455, 240, 20)
-        self.input.setStyleSheet("background-color: rgba(255,255,255,0.5);color:#000000;border-radius:10px;")
+        self.input.setStyleSheet("background-color: rgba(255,255,255,0.5);color:#000000;border-radius:4px;")
         self.input.returnPressed.connect(self.sendMessage)
         self.input.setPlaceholderText('此处输入回复……')
 
     def addMessageView(self):
-        self.messageView = QTextBrowser(self)
+        self.messageView = QWebEngineView(self)
         self.messageView.setGeometry(5, 18, 240, 435)
-        self.messageView.setReadOnly(True)  # Make it read-only
-        self.messageView.setHtml("")
-        self.messageView.setAcceptRichText(True)
+        with open("src/main.html", "r") as f:
+            content = f.read()
+        self.messageView.setHtml(content)
         self.messageView.setStyleSheet("background-color: rgba(255,255,255,0);")
 
     def addShowView(self):
@@ -120,14 +122,15 @@ class MainWindow(QMainWindow):
         self.showView.setStyleSheet("background-color: rgba(255,255,255,0);")
 
     def sm(self, m):
-        self.messageView.append(f"<div style='margin-bottom:3px;margin-top:3px;'>{str(m)}</div>")
-        self.messageView.ensureCursorVisible()
+        self.messageView.page().runJavaScript(f"addMessage('<span style=\"font-size:0.8rem;line-height:0.8rem;margin:2px 0px 2px 0px;\">{urllib.parse.quote(m)}</span>')")
+        #self.messageView.append(f"<div style='margin-bottom:3px;margin-top:3px;'>{str(m)}</div>")
+        #self.messageView.ensureCursorVisible()
 
     def addFrame(self):
         self.baseFrame = QFrame(self)
         self.baseFrame.setGeometry(0, 0, 250, 500)
         self.baseFrame.setStyleSheet(
-            "background-color: rgba(0, 0, 0, 0.7);color:#ffffff;border:1px solid #ffffff;border-radius:10px;")
+            "background-color: rgba(30, 30, 30, 0.7);color:#ffffff;border:1px solid #777777;border-radius:5px;")
 
     def __init__(self):
         super().__init__()
@@ -148,8 +151,8 @@ class MainWindow(QMainWindow):
         self.setFixedSize(250, 500)
         self.setWindowFlag(Qt.WindowType.FramelessWindowHint)
         self.setWindowFlag(Qt.WindowType.WindowStaysOnTopHint)
-        self.setStyleSheet(
-            "background-color: rgba(0, 0, 0, 0);color:#ffffff;")
+        self.setStyleSheet("color:#ffffff;border-radius:10px;background-color:transparent;")
+        self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
 
     @pyqtSlot(str)
     def update(self, data):
@@ -188,7 +191,7 @@ if __name__ == "__main__":
     t = threading.Thread(target=run_in_new_thread, args=(loop, getDanmu()))
     t.start()
 
-    app = QApplication([])
+    app = QApplication(sys.argv)
     app.setWindowIcon(QIcon(QPixmap("src/s.ico")))
     window = MainWindow()
     window.show()
