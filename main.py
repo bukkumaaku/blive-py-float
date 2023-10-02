@@ -10,14 +10,14 @@ import aiohttp
 import requests
 from PyQt6.QtCore import Qt, QThread, pyqtSignal, pyqtSlot
 from PyQt6.QtGui import QCursor, QIcon, QPixmap
-from PyQt6.QtWidgets import QApplication, QLabel, QMainWindow, QLineEdit, QTextEdit
+from PyQt6.QtWidgets import QApplication, QMainWindow, QLineEdit, QTextEdit, QFrame,QTextBrowser
 
 import src.login as slogin
 import src.varlist as bv
 from src.bdmapi import getDanmu
 
 # 直播间ID的取值看直播间URL
-bv.room_id = 7777
+bv.room_id = 1017
 
 
 class Worker(QThread):
@@ -87,35 +87,27 @@ class MainWindow(QMainWindow):
         self.input.clear()
 
     def addLabel(self):
-        self.label = QLabel("", self)
-        self.label.setStyleSheet(
-            "background-color:rgba(255,255,255,0.4); border-radius:10px;"
-        )
-        self.label.move(35, 5)
-        self.label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.label = QFrame(self)
+        self.label.setGeometry(50, 5, 150, 5)
+        self.label.setStyleSheet("background-color:rgba(255,255,255,0.4);")
         self.label.mouseReleaseEvent = self.stopMove
         self.label.mouseDoubleClickEvent = self.closeWindow
         self.label.mouseMoveEvent = self.startMove
-        self.label.setFixedSize(180, 8)
 
     def addInput(self):
         self.input = QLineEdit(self)
         self.input.setGeometry(5, 455, 240, 20)
-        self.input.setStyleSheet(
-            """
-                            background-color: rgba(255,255,255,0.5);
-                            color:#000000;
-                        """
-        )
+        self.input.setStyleSheet("background-color: rgba(255,255,255,0.5);color:#000000;border-radius:10px;")
         self.input.returnPressed.connect(self.sendMessage)
+        self.input.setPlaceholderText('此处输入回复……')
 
     def addMessageView(self):
-        self.messageView = QTextEdit(self)
-        self.messageView.setGeometry(
-            5, 18, 240, 435
-        )  # Adjust the position and size as needed
+        self.messageView = QTextBrowser(self)
+        self.messageView.setGeometry(5, 18, 240, 435)
         self.messageView.setReadOnly(True)  # Make it read-only
         self.messageView.setHtml("")
+        self.messageView.setAcceptRichText(True)
+        self.messageView.setStyleSheet("background-color: rgba(255,255,255,0);")
 
     def addShowView(self):
         self.showView = QTextEdit(self)
@@ -125,13 +117,21 @@ class MainWindow(QMainWindow):
         self.showView.setReadOnly(True)  # Make it read-only
         self.showView.setHtml("<span style='color:#54AEFF'>高能用户数:获取中 在线数:获取中</span>")
         self.showView.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+        self.showView.setStyleSheet("background-color: rgba(255,255,255,0);")
 
     def sm(self, m):
-        self.messageView.append(str(m))
+        self.messageView.append(f"<div style='margin-bottom:3px;margin-top:3px;'>{str(m)}</div>")
         self.messageView.ensureCursorVisible()
+
+    def addFrame(self):
+        self.baseFrame = QFrame(self)
+        self.baseFrame.setGeometry(0, 0, 250, 500)
+        self.baseFrame.setStyleSheet(
+            "background-color: rgba(0, 0, 0, 0.7);color:#ffffff;border:1px solid #ffffff;border-radius:10px;")
 
     def __init__(self):
         super().__init__()
+        self.baseFrame = None
         self.label = None
         self.input = None
         self.messageView = None
@@ -139,22 +139,20 @@ class MainWindow(QMainWindow):
         self.worker = Worker()
         self.worker.signal.connect(self.update)
         self.worker.start()
-
+        self.addFrame()
         self.addLabel()
         self.addInput()
         self.addMessageView()
         self.addShowView()
-        # 创建一个QLabel对象
 
-        # 调整label的大小以适应文本
         self.setFixedSize(250, 500)
         self.setWindowFlag(Qt.WindowType.FramelessWindowHint)
         self.setWindowFlag(Qt.WindowType.WindowStaysOnTopHint)
-        self.setStyleSheet("background-color: rgba(0, 0, 0, 90);color:#ffffff;")
+        self.setStyleSheet(
+            "background-color: rgba(0, 0, 0, 0);color:#ffffff;")
 
     @pyqtSlot(str)
     def update(self, data):
-        # Update the widget with the number
         self.sm(data)
         self.showView.setHtml(
             "<span style='color:#54AEFF'>高能用户数:"

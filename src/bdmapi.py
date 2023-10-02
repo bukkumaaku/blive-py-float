@@ -91,17 +91,14 @@ class MyHandler(blivedm.BaseHandler):
             if len(ulevel_color) < 6:
                 ulevel_color = "0" + ulevel_color
             prefixData = (
-                "<span style='display:block;color:#ffffff;background-color:#"
-                + mcolor
-                + "'>"
-                + str(message.medal_name)
-                + "</span><span style='display:block;color:#ffffff;background-color:#"
-                + ulevel_color
-                + "'>"
-                + str(message.medal_level)
-                + "</span>"
+                f"""<span style='display:block;color:#ffffff;background-color:#{mcolor};'>
+                {str(message.medal_name)}
+                <span style='display:block;color:#000000;background-color:#ffffff;border:2px solid #{mcolor};'>
+                {str(message.medal_level)}
+                </span></span>"""
             )
-        data = f"{prefixData} {message.uname}：{message.msg}"
+        data = f"<div>{prefixData}&nbsp;{message.uname}：{message.msg}</div>"
+        print(data)
         self.setMessage(data)
 
     def _on_gift(self, client: blivedm.BLiveClient, message: web_models.GiftMessage):
